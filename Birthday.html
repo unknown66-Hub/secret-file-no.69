@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Iddah</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #c084fc, #f9a8d4);
+      color: #333;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    .container {
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #fff;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      margin: 20px auto;
+      max-width: 520px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease forwards;
+    }
+    button {
+      padding: 12px 22px;
+      border: none;
+      border-radius: 10px;
+      background: #a855f7;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #9333ea;
+    }
+    .hidden { display: none; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: 0;
+      animation: fall linear forwards;
+      border-radius: 50%;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .emoji-btn {
+      font-size: 2rem;
+      cursor: pointer;
+      margin: 10px;
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+
+    .emoji-btn:hover {
+      transform: scale(1.3);
+    }
+
+    #countdown {
+      font-size: 2rem;
+      color: white;
+      margin-top: 20px;
+    }
+
+    /* Fireworks */
+    .firework {
+      position: fixed;
+      width: 5px;
+      height: 5px;
+      background: yellow;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 1;
+    }
+
+    /* Emoji messages inside card */
+    .emoji-message {
+      margin: 10px 0;
+      padding: 8px 12px;
+      background: #f3f3f3;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      display: inline-block;
+      animation: popIn 0.5s ease forwards;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Happy 22nd Birthday, Iddah 🎂</h1>
+
+    <div class="card">
+      <p>Click MEEEEE for your surprise 😁🎁✨</p>
+      <button onclick="startCountdown()">Start 🎬</button>
+    </div>
+
+    <div id="countdown" class="hidden"></div>
+
+    <div id="letter" class="card hidden">
+      <p>
+        Hey Iddah 😊,<br><br>
+
+        Just wanted to say happy birthday 🎉 I hope today is full of good vibes, laughter, and moments that actually make you smile.<br><br>
+
+        You’ve got a really cool energy about you—easy to talk to, fun to be around, and just genuinely a good person ✨<br><br>
+
+        I hope this year brings you more wins, more memories, and a lot of moments you’ll look back on and appreciate.<br><br>
+
+        Enjoy your day properly 🎂 you deserve it.<br><br>
+
+        — From me 🙂
+      </p>
+
+      <p>Tap these 👇</p>
+      <div>
+        <span class="emoji-btn" onclick="reactToEmoji('🎂')">🎂</span>
+        <span class="emoji-btn" onclick="reactToEmoji('🎉')">🎉</span>
+        <span class="emoji-btn" onclick="reactToEmoji('✨')">✨</span>
+      </div>
+
+      <div id="emojiMessages"></div>
+
+      <button onclick="showPoem()">Bonus 👀</button>
+    </div>
+
+    <div id="poem" class="card hidden">
+      <p>
+        Candles lit and wishes made,<br>
+        A perfect 22nd birthday laid.<br>
+        Just good vibes and feeling right,<br>
+        That’s your energy today and tonight 🎉
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function startCountdown() {
+      const countdownEl = document.getElementById('countdown');
+      countdownEl.classList.remove('hidden');
+      let count = 3;
+      countdownEl.innerText = count;
+
+      const interval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownEl.innerText = count;
+        } else {
+          clearInterval(interval);
+          countdownEl.innerText = '🎆';
+          launchFireworks(5);
+          createConfetti(200);
+          setTimeout(() => document.getElementById('letter').classList.remove('hidden'), 1500);
+        }
+      }, 800);
+    }
+
+    function showPoem() {
+      document.getElementById('poem').classList.remove('hidden');
+      createConfetti(150);
+    }
+
+    // Emoji reactions with messages inside card
+    function reactToEmoji(emoji) {
+      let msg = '';
+      let colors = [];
+      switch(emoji) {
+        case '🎂':
+          msg = 'Hope your year is full of sweetness 🍰';
+          colors = ['#facc15','#ffffff'];
+          break;
+        case '🎉':
+          msg = "It's PARTY TIME!!! 🎊"; // updated message
+          colors = ['#f87171','#34d399','#60a5fa','#fbbf24','#e879f9'];
+          break;
+        case '✨':
+          msg = 'Keep shining ✨';
+          colors = ['#c084fc','#f9a8d4','#a855f7'];
+          break;
+      }
+      createConfettiCustom(100, colors);
+      showEmojiMessage(msg);
+    }
+
+    function showEmojiMessage(message) {
+      const container = document.getElementById('emojiMessages');
+      const div = document.createElement('div');
+      div.classList.add('emoji-message');
+      div.innerText = message;
+      container.appendChild(div);
+    }
+
+    function createConfetti(amount = 100) {
+      for (let i = 0; i < amount; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.width = confetti.style.height = (Math.random() * 10 + 8) + 'px';
+        confetti.style.backgroundColor = ['#c084fc','#f9a8d4','#ffffff','#a855f7','#fbbf24','#34d399','#f87171'][Math.floor(Math.random()*7)];
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
+
+    function createConfettiCustom(amount = 100, colors = ['#c084fc','#f9a8d4','#ffffff','#a855f7']) {
+      for (let i = 0; i < amount; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.width = confetti.style.height = (Math.random() * 10 + 8) + 'px';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3500);
+      }
+    }
+
+    // Fireworks effect
+    function launchFireworks(number) {
+      for (let i = 0; i < number; i++) {
+        const x = Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1;
+        const y = Math.random() * window.innerHeight * 0.5 + 50;
+        createFirework(x, y);
+      }
+    }
+
+    function createFirework(x, y) {
+      const colors = ['#f87171','#fbbf24','#34d399','#60a5fa','#a855f7','#f9a8d4'];
+      for (let i = 0; i < 20; i++) {
+        const fire = document.createElement('div');
+        fire.classList.add('firework');
+        fire.style.left = x + 'px';
+        fire.style.top = y + 'px';
+        fire.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+        document.body.appendChild(fire);
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 80 + 50;
+        fire.animate([
+          { transform: `translate(0,0)`, opacity: 1 },
+          { transform: `translate(${Math.cos(angle)*distance}px, ${Math.sin(angle)*distance}px)`, opacity: 0 }
+        ], { duration: 1200, easing: 'ease-out' });
+
+        setTimeout(() => fire.remove(), 1300);
+      }
+    }
+  </script>
+</body>
+</html>
